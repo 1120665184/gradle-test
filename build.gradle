@@ -1,0 +1,89 @@
+apply plugin: top.plugin.GreetingPlugin
+
+printTimeNow {
+    format 'yyyy/mm/dd hh:MM:ss'
+}
+
+//应用于gradle 编译
+buildscript {
+    apply from:"config.gradle"
+
+    repositories {
+        mavenLocal()
+        maven{ url 'https://maven.aliyun.com/repository/public/' }
+        
+        //maven 中央仓库
+        mavenCentral()
+    }
+
+    dependencies {
+        // 指定gradle spring boot plugin 版本 用于spring boot 版本依赖控制
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+    //应用插件
+    apply plugin: 'java'
+    //设置group id
+    group 'top.quyq'
+
+    //设置版本
+    version '1.0.0'
+
+    description 'projec'
+
+    //指定中央仓库 项目使用
+    repositories {
+        mavenLocal()
+        maven{ url 'https://maven.aliyun.com/repository/public/' }
+        //maven 中央仓库
+        mavenCentral()
+    }
+}
+
+// 所有子项目的通用配置
+subprojects {
+
+    apply plugin: 'org.springframework.boot'
+
+    //用于spring boot 版本jar依赖
+    apply plugin: 'io.spring.dependency-management'
+
+  
+
+    //指定jdk版本  编译环境
+    sourceCompatibility = 1.8
+    //运行环境
+    targetCompatibility = 1.8
+
+
+    //依赖
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage',module:'junit-vintage-engine'
+        }
+        compile "org.projectlombok:lombok:${rootProject.lombok}"
+        annotationProcessor "org.projectlombok:lombok:${rootProject.lombok}"
+        /*annotationProcessor "org.projectlombok:lombok:${rootProject.lombok}"
+        compileOnly "org.projectlombok:lombok:${rootProject.lombok}"
+        testAnnotationProcessor "org.projectlombok:${rootProject.lombok}"
+        testCompileOnly "org.projectlombok:lombok:${rootProject.lombok}"*/
+    }
+
+    //这里一定得要。在多模块下，不然编译失败，因为不会把信赖模块给打包。
+   /* jar {
+        enabled = true
+    }*/
+    bootJar {
+        baseName 'fyt'
+        manifest {
+            attributes 'Start-Class':'top.quyq.Application'
+        }
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+}

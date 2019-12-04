@@ -1,0 +1,5 @@
+rootProject.name = 'gradle-test'
+include 'project-admin-api','common','data-alarm'
+/*include 'common'
+include 'data-alarm'*/
+

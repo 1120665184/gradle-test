@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":common")
+    compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: rootProject.mybatis_plus
+}

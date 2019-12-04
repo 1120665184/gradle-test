@@ -1,0 +1,5 @@
+
+dependencies {
+    implementation fileTree(dir: 'libs',include : ['*.jar'])
+    //implementation files('libs/commons-collections4-4.4.jar')
+}
